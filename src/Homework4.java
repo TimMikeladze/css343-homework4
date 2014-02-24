@@ -1,16 +1,50 @@
+import java.util.Arrays;
+
 public class Homework4 {
 	
 	public static void main(String[] args) {
+		
 	}
 	
 	public static boolean_int Horspool(String text, String pattern) {
-		return null;
+		boolean_int bi = new boolean_int();
+		
+		if (pattern == null || text == null || pattern.isEmpty() || text.isEmpty() || pattern.length() > text.length()) {
+			return bi;
+		}
+		
+		char[] patternChars = pattern.toCharArray();
+		char[] textChars = text.toCharArray();
+		
+		int currentPosition = 0;
+		int lastPosition = patternChars.length - 1;
+		
+		int[] shift = new int[256];
+		Arrays.fill(shift, patternChars.length);
+		
+		for (int i = 0; i < lastPosition; i++) {
+			shift[patternChars[i]] = lastPosition - i;
+		}
+		
+		while (currentPosition <= textChars.length - patternChars.length) {
+			bi.count++;
+			for (int i = lastPosition; patternChars[i] == textChars[i + currentPosition]; i--) {
+				bi.count++;
+				if (i == 0) {
+					bi.count--;
+					bi.bool_tag = true;
+					return bi;
+				}
+			}
+			currentPosition += shift[textChars[currentPosition + lastPosition]];
+		}
+		return bi;
 	}
 	
 	public static boolean_int bruteforceforStringMatching(String text, String pattern) {
 		boolean_int bi = new boolean_int();
 		
-		if (text == null || text.isEmpty() || pattern == null || pattern.isEmpty()) {
+		if (pattern == null || text == null || pattern.isEmpty() || text.isEmpty() || pattern.length() > text.length()) {
 			return bi;
 		}
 		
@@ -43,10 +77,5 @@ class boolean_int {
 	boolean_int() {
 		bool_tag = false;
 		count = 0;
-	}
-	
-	@Override
-	public String toString() {
-		return "boolean_int [bool_tag=" + bool_tag + ", count=" + count + "]";
 	}
 }
