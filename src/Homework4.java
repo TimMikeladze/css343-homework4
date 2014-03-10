@@ -3,7 +3,56 @@ import java.util.Arrays;
 public class Homework4 {
 	
 	public static void main(String[] args) {
+		System.out.println();
+		computeLevenshteinDistance("book", "dog");
+	}
+	
+	private static int minimum(int a, int b, int c) {
+		return Math.min(Math.min(a, b), c);
+	}
+	
+	public static int computeLevenshteinDistance(String str1, String str2) {
+		char[] a = str1.toCharArray();
+		char[] b = new char[str2.length()];
 		
+		int[][] distance = new int[str1.length() + 1][str2.length() + 1];
+		
+		for (int i = 0; i <= str1.length(); i++) {
+			distance[i][0] = i;
+		}
+		for (int j = 1; j <= str2.length(); j++) {
+			distance[0][j] = j;
+		}
+		
+		for (int i = 1; i <= str1.length(); i++) {
+			for (int j = 1; j <= str2.length(); j++) {
+				int deletion = distance[i - 1][j] + 1;
+				int insertion = distance[i][j - 1] + 1;
+				int sub = distance[i - 1][j - 1] + ((str1.charAt(i - 1) == str2.charAt(j - 1)) ? 0 : 1);
+				
+				distance[i][j] = minimum(deletion, insertion, sub);
+				if (distance[i][j] == deletion) {
+					b[j - 1] = '\\';
+				} else if (distance[i][j] == insertion) {
+					b[j - 1] = str2.charAt(j - 1);
+				} else if (distance[i][j] == sub) {
+					b[j - 1] = str2.charAt(j - 1);
+				}
+			}
+		}
+		
+		System.out.println(str1);
+		System.out.println(new String(b));
+		
+		for (int row[] : distance) {
+			for (int i : row) {
+				System.out.print(i);
+				System.out.print("\t");
+			}
+			System.out.println();
+		}
+		
+		return distance[str1.length()][str2.length()];
 	}
 	
 	public static boolean_int Horspool(String text, String pattern) {
